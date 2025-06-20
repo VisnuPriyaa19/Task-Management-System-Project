@@ -58,20 +58,46 @@ exports.getTaskById = async (req, res) => {
 exports.updateTask = async (req, res) => {
   try {
     const taskId = req.params.id;
-    const updated = await Task.findByIdAndUpdate(taskId, req.body, { new: true });
-    if (!updated) {
+    const updates = req.body;
+
+    // Find the existing task
+    const task = await Task.findById(taskId);
+    if (!task) {
       return res.status(404).json({ msg: 'Task not found' });
     }
-    res.json({ msg: 'Task updated', task: updated });
-  } 
-  catch (err) {
+
+    const oldStatus = task.status;
+    const newStatus = updates.status;
+
+    // Log to confirm
+    console.log(`Old Status: ${oldStatus}, New Status: ${newStatus}`);
+
+    //  Handle completedAt update
+    if (oldStatus !== newStatus) {
+      if (newStatus === 'done') {
+        task.completedAt = new Date();
+      } else if (oldStatus === 'done' && newStatus !== 'done') {
+        task.completedAt = null;
+      }
+    }
+
+    //  Update other fields
+    for (const key in updates) {
+      if (key !== 'completedAt') {
+        task[key] = updates[key];
+      }
+    }
+
+    const updatedTask = await task.save();
+
+    res.json({ msg: 'Task updated successfully', task: updatedTask });
+
+  } catch (err) {
     console.error('Task update error:', err.message);
-    res.status(500).json({
-      status: 'error',
-      msg: 'Failed to update task'
-    });
+    res.status(500).json({ status: 'error', msg: 'Failed to update task' });
   }
 };
+
 
 // DELETE A TASK BY ID
 exports.deleteTask = async (req, res) => {

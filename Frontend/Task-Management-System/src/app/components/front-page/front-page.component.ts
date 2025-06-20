@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { HeaderComponent } from '../header/header.component';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-front-page',
-  imports: [RouterModule],
+  imports: [RouterModule, HeaderComponent, FooterComponent],
   templateUrl: './front-page.component.html',
   styleUrl: './front-page.component.css'
 })

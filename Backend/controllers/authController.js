@@ -20,7 +20,7 @@ exports.register = async (req, res) => {
       return res.status(400).json({ msg: 'Username or Email already exists' });
     }
 
-    // Hash the password
+    // Hash the password - 10 salt rounds(salt: randome value added to the pw before hashing it)
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create new user with hashed password
@@ -101,8 +101,9 @@ exports.sendOTP = async (req, res) => {
   try {
     await sendOTPEmail(email, otp);
     res.status(200).json({ msg: 'OTP sent to email' });
-  } catch (err) {
-    console.error('Error while sending OTP:', err); // ADD THIS
+  } 
+  catch (err) {
+    console.error('Error while sending OTP:', err); 
     res.status(500).json({ msg: 'Failed to send OTP' });
   }
 };
@@ -111,9 +112,12 @@ exports.sendOTP = async (req, res) => {
 exports.verifyOTP = async (req, res) => {
   const { email, otp } = req.body;
   const isValid = verifyOTP(email, otp);
-  if (isValid) {
+  if (isValid) 
+  {
     res.status(200).json({ msg: 'OTP verified' });
-  } else {
+  } 
+  else 
+  {
     res.status(400).json({ msg: 'Invalid or expired OTP' });
   }
 };
@@ -176,7 +180,8 @@ exports.updateUsername = async (req, res) => {
       newUsername: trimmedUsername,
       token: newToken // Return new token with updated username
     });
-  } catch (err) {
+  } 
+  catch (err) {
     console.error('Update Username Error:', err.message);
     res.status(500).json({ msg: 'Server error during username update' });
   }
@@ -222,7 +227,8 @@ exports.changePassword = async (req, res) => {
     await User.findByIdAndUpdate(userId, { password: hashedNewPassword });
 
     res.status(200).json({ msg: 'Password changed successfully' });
-  } catch (err) {
+  } 
+  catch (err) {
     console.error('Change Password Error:', err.message);
     res.status(500).json({ msg: 'Server error during password change' });
   }
@@ -243,15 +249,18 @@ exports.checkUsernameEmail = async (req, res) => {
 
       if (usernameExists && emailExists) {
         return res.status(409).json({ msg: 'Username and Email already exist' });
-      } else if (usernameExists) {
+      } 
+      else if (usernameExists) {
         return res.status(409).json({ msg: 'Username already exists' });
-      } else if (emailExists) {
+      } 
+      else if (emailExists) {
         return res.status(409).json({ msg: 'Email already exists' });
       }
     }
-
     return res.status(200).json({ msg: 'Username and Email are available' });
-  } catch (err) {
+  } 
+  catch (err) 
+  {
     res.status(500).json({ msg: 'Server error while checking user info' });
   }
 };
@@ -278,7 +287,9 @@ exports.checkUsername = async (req, res) => {
     }
 
     return res.status(200).json({ msg: 'Username is available' });
-  } catch (err) {
+  } 
+  catch (err) 
+  {
     console.error('Error checking username:', err.message);
     res.status(500).json({ msg: 'Server error while checking username' });
   }

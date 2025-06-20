@@ -31,7 +31,7 @@ exports.requestPasswordReset = async (req, res) => {
     // Generate and save reset token
     const resetToken = crypto.randomBytes(20).toString('hex');
     user.resetPasswordToken = resetToken;
-    user.resetPasswordExpires = Date.now() + 300000; // 1 hour
+    user.resetPasswordExpires = Date.now() + 300000; // 5 minutes
     await user.save();
  
     // Send email
@@ -56,7 +56,9 @@ exports.requestPasswordReset = async (req, res) => {
     await transporter.sendMail(mailOptions);
    
     res.status(200).json({ msg: 'Password reset email sent' });
-  } catch (error) {
+  } 
+  catch (error) 
+  {
     console.error('Password reset error:', error);
     res.status(500).json({
       msg: 'Error processing password reset request',
@@ -96,7 +98,9 @@ exports.resetPassword = async (req, res) => {
     await user.save();
  
     res.status(200).json({ msg: 'Password updated successfully' });
-  } catch (error) {
+  } 
+  catch (error) 
+  {
     console.error('Password reset error:', error);
     res.status(500).json({
       msg: 'Error resetting password',

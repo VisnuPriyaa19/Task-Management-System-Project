@@ -6,10 +6,12 @@ const authMiddleware = (req, res, next) => {
   // Get token from authorization header
   const authHeader = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+  if (!authHeader || !authHeader.startsWith('Bearer '))     //bcoz tokens are expected in the format "Bearer <token>"
+    {
     return res.status(401).json({ status: 'error', msg: 'Authorization token missing or invalid' });
   }
 
+  //splitting authHeader to extract the token
   const token = authHeader.split(' ')[1];
 
   try {

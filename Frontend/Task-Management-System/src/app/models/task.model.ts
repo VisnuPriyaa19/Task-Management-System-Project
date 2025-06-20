@@ -33,6 +33,7 @@ export interface TaskStructure {
   project: string;
   createdAt: string;
   updatedAt: string;
+  completedAt?: string;
   __v: number;
 }
 
@@ -44,11 +45,13 @@ export interface TaskSummaryResponse {
   priority: TaskPriority;
   dueDate: string;
   status: TaskStatus;
-  project: null | {
+  project: null | string | {
     _id: string;
     projectName: string;
   };
   createdAt: string;
+  updatedAt: string;
+  completedAt?: string;
   __v: number;
 }
 

@@ -1,17 +1,6 @@
 <div class="profile-container">
-  <!-- Header -->
-  <div class="profile-header">
-    <div class="header-left">
-      <button mat-icon-button class="back-btn" (click)="goBack()">
-        <mat-icon>arrow_back</mat-icon>
-      </button>
-      <h1 class="page-title">Profile</h1>
-    </div>
-    <button mat-raised-button color="warn" class="logout-btn" (click)="logout()">
-      <mat-icon>logout</mat-icon>
-      Logout
-    </button>
-  </div>
+
+  <app-header [hideAuthButtons]="true" [logoutbutton]="true"></app-header>
 
   <!-- Profile Content -->
   <div class="profile-content">

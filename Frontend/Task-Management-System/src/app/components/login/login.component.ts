@@ -8,11 +8,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute } from '@angular/router';
+
+import { HeaderComponent } from '../header/header.component';
 import { PasswordResetService } from '../../services/password-reset/password-reset.service';
+import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, CommonModule, RouterModule, MatInputModule, MatButtonModule, MatCardModule],
+  imports: [HeaderComponent,FooterComponent, ReactiveFormsModule, CommonModule, RouterModule, MatInputModule, MatButtonModule, MatCardModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })

@@ -11,16 +11,16 @@ const taskRoutes = require('./routes/taskRoutes');
 // Load environment variables
 dotenv.config();
  
-// Initialize express app
+// Initialize express app - starting point of backend server
 const app = express();
 
 // CORS Configuration
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:4200', 
-  credentials: true
+  credentials: true         //allows aut headers to be sent across domains
 }));
 
-// Middleware to parse JSON request bodies
+// Built-in Middleware to parse JSON request bodies(wihtout this req.body is undefined)
 app.use(express.json());
  
 // MongoDB Connection

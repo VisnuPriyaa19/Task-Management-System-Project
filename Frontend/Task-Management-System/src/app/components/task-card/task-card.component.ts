@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { EventEmitter, Output } from '@angular/core';
+import { TaskCreateRequest, TaskStructure } from '../../models/task.model';
 
 @Component({
   selector: 'app-task-card',
@@ -11,9 +12,11 @@ import { EventEmitter, Output } from '@angular/core';
 })
 
 export class TaskCardComponent {
-  @Input() task: any;
 
-  @Output() taskClick = new EventEmitter<any>();
+
+    @Input() task!: TaskStructure;
+ 
+  @Output() taskClick = new EventEmitter<TaskStructure>();
 
   handleClick() {
     this.taskClick.emit(this.task);

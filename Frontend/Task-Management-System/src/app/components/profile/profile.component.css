@@ -24,6 +24,18 @@
   padding: 0;
 }
 
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.logo-img {
+    height: 40px;
+    margin-right: 10px;
+}
+
 .profile-header {
   background-color: #0056b3;
   color: #ffffff;
@@ -58,10 +70,14 @@
 }
 
 .page-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 1.8rem;
   font-weight: 700;
   margin: 0;
   color: white;
+  text-align: center;
 }
 
 .logout-btn {

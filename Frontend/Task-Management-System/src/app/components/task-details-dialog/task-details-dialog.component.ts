@@ -10,6 +10,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import { TaskStructure } from '../../models/task.model';
 
 @Component({
   selector: 'app-task-details-dialog',
@@ -41,7 +42,7 @@ export class TaskDetailsDialogComponent implements OnInit {
   minDate: Date = new Date();
   maxDate: Date | null = null;
   taskForm!: FormGroup;
-  originalTask: any;
+  originalTask!: TaskStructure;
   existingTaskNames: string[] = [];
 
   ngOnInit(): void {

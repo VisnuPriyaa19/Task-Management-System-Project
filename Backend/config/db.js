@@ -1,3 +1,5 @@
+//Purpose : Allows Node .js backend to connect to MongoDB using mongoose
+
 const mongoose = require('mongoose');
 
 const connectDB = async () => {

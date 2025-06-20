@@ -1,33 +1,18 @@
 <!-- Header -->
 <div class="main">
 
-  <header class="app-header">
-    <div class="left">
-      <img src="assets/images/logo.png" alt="KanBoard Logo" class="logo-img" />
-      <h2><span style="color:white">KanBoard</span></h2>
-    </div>
+  
 
-   <div class="right profile">
-      <div class="right profile-container" (click)="toggleProfileMenu($event)">
-        <mat-icon class="profile-icon">account_circle</mat-icon>
-
-        <div *ngIf="isProfileMenuOpen" class="profile-dropdown">
-          <div class="profile-option" (click)="navigateToProfile(); $event.stopPropagation()">
-            <mat-icon class="option-icon">person</mat-icon>
-            <span>Profile</span>
-          </div>
-          <div class="profile-option logout" (click)="logout(); $event.stopPropagation()">
-            <mat-icon class="option-icon">logout</mat-icon>
-            <span>Logout</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
+    <app-header
+    
+    [showProfile]="true"
+    [showhamburger]="true"
+    >
+  </app-header>
 
   <div class="container">
     <div class="task-header">
-      <h2 class="project-title">{{ projectTitle }}</h2>
+      <h2 class="project-title">{{ projectName }}</h2>
       <!-- Filters Section -->
       <div class="filters-section" *ngIf="!isTaskListEmpty">
         <div class="filters-header">
@@ -86,6 +71,18 @@
                 End date must be greater than or equal to start date
               </mat-error>
             </mat-form-field>
+
+            <!-- Chart Library Dropdown -->
+<mat-form-field appearance="outline">
+  <mat-label>Summary Charts</mat-label>
+  <mat-select (selectionChange)="goToChartSummary($event.value)">
+    <mat-option value="echarts">ECharts</mat-option>
+    <mat-option value="chartjs">Chart.js</mat-option>
+    <mat-option value="highcharts">Highcharts</mat-option>
+  </mat-select>
+  <mat-icon matPrefix>bar_chart</mat-icon>
+</mat-form-field>
+
 
             <!-- Action Buttons -->
             <div class="filter-actions">

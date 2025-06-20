@@ -1,3 +1,6 @@
+import { TaskStructure, TaskSummaryResponse } from "./task.model";
+
+
 //--------------------REQUEST--------------------
 
 export interface ProjectInputRequest {
@@ -21,10 +24,10 @@ export interface ProjectStructure {
   projectName: string;
   projectDesc: string;
   dueDate: string;
-  user: string;
+  user?: string;
   createdAt: string;
   updatedAt: string;
-  __v: number;
+  __v?: number;
 }
 
 //Create Project
@@ -42,6 +45,8 @@ export interface ProjectSummaryResponse {
   user: string;
   createdAt: string;
   updatedAt?: string;
+  progress?:number;
+  tasks?: TaskSummaryResponse[];
   __v: number;
 }
 

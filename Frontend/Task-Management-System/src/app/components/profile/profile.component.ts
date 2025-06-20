@@ -11,6 +11,14 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/auth/auth.service';
 import { HttpClient } from '@angular/common/http';
+import { HeaderComponent } from '../header/header.component';
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  joinDate?: string;
+}
 
 @Component({
   selector: 'app-profile',
@@ -24,14 +32,14 @@ import { HttpClient } from '@angular/common/http';
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    MatCardModule
+    MatCardModule,HeaderComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
 
 export class ProfileComponent implements OnInit {
-  user: any = {};
+  user!: User;
   changePasswordForm: FormGroup;
   showChangePassword: boolean = false;
   hideCurrentPassword: boolean= true;

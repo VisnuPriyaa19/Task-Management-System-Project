@@ -1,19 +1,26 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
-import { AuthService } from '../../services/auth/auth.service';
+
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
+import { HeaderComponent } from '../header/header.component';
+
+import { AuthService } from '../../services/auth/auth.service';
+import { FooterComponent } from '../footer/footer.component';
+
 @Component({
   selector: 'app-register',
-  imports: [FormsModule, CommonModule, RouterModule, MatInputModule, MatButtonModule, MatCardModule],
+  imports: [HeaderComponent,FooterComponent, FormsModule, CommonModule, RouterModule, MatInputModule, MatButtonModule, MatCardModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
+
 export class RegisterComponent {
   uname: string = '';
   email: string = '';

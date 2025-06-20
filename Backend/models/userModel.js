@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
- 
+
+//mongoose.schema() - defines the structure of the document
 const UserSchema = new mongoose.Schema({
   uname: {
     type: String,
@@ -23,4 +24,5 @@ const UserSchema = new mongoose.Schema({
   resetPasswordExpires: Date
 });
  
+//mongoose.model() - create the model
 module.exports = mongoose.model('User', UserSchema);

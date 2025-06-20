@@ -5,7 +5,8 @@ import {
   FormGroup,
   Validators,
   AbstractControl,
-  ValidationErrors
+  ValidationErrors,
+  FormControl
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
@@ -15,6 +16,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { ProjectStructure } from '../../models/project.model';
+
+interface ProjectDialogData {
+  project?: ProjectStructure;
+  allProjects?: ProjectStructure[];
+}
 
 @Component({
   selector: 'app-project-dialog',
@@ -27,19 +34,23 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './project-dialog.component.html',
   styleUrl: './project-dialog.component.css'
 })
-
 export class ProjectDialogComponent {
-  projectForm: FormGroup;
-  isChanged: boolean = false;
-  nameExists: boolean = false;
+  projectForm: FormGroup<{
+    projectName: FormControl<string>;
+    projectDesc: FormControl<string>;
+    dueDate: FormControl<Date | null>;
+  }>;
+  
+  isChanged = false;
+  nameExists = false;
   minDate: Date = new Date();
 
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<ProjectDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: ProjectDialogData
   ) {
-    this.projectForm = this.fb.group({
+    this.projectForm = this.fb.nonNullable.group({
       projectName: [
         data?.project?.projectName || '',
         [
@@ -48,7 +59,7 @@ export class ProjectDialogComponent {
         ]
       ],
       projectDesc: [data?.project?.projectDesc || '', Validators.required],
-      dueDate: [data?.project?.dueDate ? new Date(data.project.dueDate) : '', Validators.required],
+      dueDate: [data?.project?.dueDate ? new Date(data.project.dueDate) : null, Validators.required],
     });
 
     this.projectForm.valueChanges.subscribe(() => {
@@ -63,17 +74,23 @@ export class ProjectDialogComponent {
   }
 
   detectChanges(): void {
-    this.isChanged = JSON.stringify(this.projectForm.value) !== JSON.stringify({
+    const initialValue = {
       projectName: this.data?.project?.projectName || '',
       projectDesc: this.data?.project?.projectDesc || '',
-      dueDate: this.data?.project?.dueDate ? new Date(this.data.project.dueDate) : ''
-    });
+      dueDate: this.data?.project?.dueDate ? new Date(this.data.project.dueDate) : null
+    };
+    this.isChanged = JSON.stringify(this.projectForm.value) !== JSON.stringify(initialValue);
   }
 
   checkDuplicateName(name: string): void {
     const control = this.projectForm.get('projectName');
-    this.nameExists = this.data?.allProjects?.some(
-      (proj: any) => proj._id !== this.data?.project?._id &&
+    if (!this.data?.allProjects) {
+      this.nameExists = false;
+      return;
+    }
+
+    this.nameExists = this.data.allProjects.some(
+      (proj) => proj._id !== this.data?.project?._id &&
         proj.projectName.toLowerCase() === name.toLowerCase()
     );
 
@@ -87,7 +104,6 @@ export class ProjectDialogComponent {
 
   customProjectNameValidator(control: AbstractControl): ValidationErrors | null {
     const value = (control.value || '').trim();
-
     if (!value) return null;
 
     const onlyLetters = /^[A-Za-z]+$/;
@@ -113,7 +129,6 @@ export class ProjectDialogComponent {
   }
 
   onCancel(): void {
-    this.projectForm.reset(this.data?.project);
     this.dialogRef.close();
   }
 }

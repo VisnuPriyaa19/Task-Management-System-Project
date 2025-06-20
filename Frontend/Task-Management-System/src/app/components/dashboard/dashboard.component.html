@@ -1,97 +1,13 @@
 <div class="main">
-  <header class="dashboard-header">
-    <div class="header-left">
-      <img src="assets/images/logo.png" alt="KanBoard Logo" class="logo-img" />
-      <h2><span style="color:white" >KanBoard</span></h2>
-    </div>
+  <app-header
+  [showSearch]="true"
+  [showProfile]="true"
+  [showhamburger]="true"
+  (onSearch)="searchTerm = $event; applyFilters()"
+  (onMenuToggle)="toggleMobileMenu()">
+  </app-header>
+  
 
-    <div class="header-center desktop-only">
-      <div class="header-search">
-        <div class="search-field-container">
-          <mat-icon class="search-icon">search</mat-icon>
-          <input type="text" class="search-field" 
-                 placeholder="Search Projects..." 
-                 [(ngModel)]="searchTerm" 
-                 (ngModelChange)="applyFilters()">
-        </div>
-      </div>
-    </div>
-
-    <div class="header-right">
-      <button class="menu-toggle mobile-only" (click)="toggleMobileMenu()">
-        <mat-icon>{{ isMobileMenuOpen ? 'close' : 'menu' }}</mat-icon>
-      </button>
-      <div class="profile-container desktop-only" (click)="toggleProfileMenu($event)">
-        <mat-icon class="profile-icon">account_circle</mat-icon>
-        <div *ngIf="isProfileMenuOpen" class="profile-dropdown">
-          <div class="profile-option" (click)="navigateToProfile(); $event.stopPropagation()">
-            <mat-icon class="option-icon">person</mat-icon>
-            <span>Profile</span>
-          </div>
-          <div class="profile-option logout" (click)="logout(); $event.stopPropagation()">
-            <mat-icon class="option-icon">logout</mat-icon>
-            <span>Logout</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-
-
-  <!-- Mobile Menu -->
-  <div class="mobile-menu" *ngIf="isMobileMenuOpen">
-    <!-- Mobile Search -->
-    <div class="mobile-search">
-      <div class="search-field-container">
-        <mat-icon class="search-icon">search</mat-icon>
-        <input type="text" class="search-field" 
-               placeholder="Search Projects..." 
-               [(ngModel)]="searchTerm" 
-               (ngModelChange)="applyFilters()">
-      </div>
-    </div>
-
-    <!-- Mobile Filters -->
-    <div class="mobile-filters">
-      <h4>Quick Filters</h4>
-      <div class="mobile-filter-buttons">
-        <button class="mobile-filter-btn" [class.active]="selectedStatus === 'all'"
-                (click)="setStatusFilter('all')">
-          All ({{ getProjectCounts().all }})
-        </button>
-        <button class="mobile-filter-btn" [class.active]="selectedStatus === 'incomplete'"
-                (click)="setStatusFilter('incomplete')">
-          Incomplete ({{ getProjectCounts().incomplete }})
-        </button>
-        <button class="mobile-filter-btn" [class.active]="selectedStatus === 'completed'"
-                (click)="setStatusFilter('completed')">
-          Completed ({{ getProjectCounts().completed }})
-        </button>
-      </div>
-      <button class="clear-filters-btn mobile" (click)="clearFilters()">
-        <mat-icon>clear</mat-icon>
-        Clear Filters
-      </button>
-    </div>
-
-    <!-- Mobile Profile -->
-    <div class="mobile-profile-section">
-      <div class="profile-container mobile-profile" (click)="toggleProfileMenu($event)">
-        <mat-icon class="profile-icon">account_circle</mat-icon>
-        <span class="profile-text">{{ username }}</span>
-        <div *ngIf="isProfileMenuOpen" class="profile-dropdown">
-          <div class="profile-option" (click)="navigateToProfile(); $event.stopPropagation()">
-            <mat-icon class="option-icon">person</mat-icon>
-            <span>Profile</span>
-          </div>
-          <div class="profile-option logout" (click)="logout(); $event.stopPropagation()">
-            <mat-icon class="option-icon">logout</mat-icon>
-            <span>Logout</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Main Content Area -->
   <div class="main-content">
@@ -169,11 +85,91 @@
       </div>
       <!-- Alternative header when no projects exist -->
       <div class="content-header" *ngIf="!projects || projects.length === 0">
-        <h2 class="project-title">Welcome to KanBoard</h2>
+        <h2 class="project-title"></h2>
         <button mat-raised-button color="primary" class="new-project-btn" (click)="openCreateDialog()">
           <mat-icon>add</mat-icon>
           Create Your First Project
         </button>
+      </div>
+
+      <!-- Mobile Filters Section - Below project dashboard header -->
+      <div class="mobile-filters-section mobile-only" *ngIf="projects && projects.length > 0">
+        <div class="mobile-filters-header">
+          <mat-icon class="filter-icon">filter_list</mat-icon>
+          <h3 class="mobile-filters-title">Filters & Search</h3>
+          <button mat-icon-button class="mobile-filter-toggle" (click)="toggleMobileFilters()">
+            <mat-icon>{{ mobileFiltersExpanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+          </button>
+        </div>
+
+        <form class="mobile-filter-form" [class.expanded]="mobileFiltersExpanded">
+          <div class="mobile-filter-controls">
+            <!-- Status Filter Row -->
+            <div class="filter-control-row">
+              <button 
+                type="button"
+                class="mobile-status-btn" 
+                [class.active]="selectedStatus === 'all'"
+                (click)="setStatusFilter('all')">
+                All ({{ getProjectCounts().all }})
+              </button>
+              <button 
+                type="button"
+                class="mobile-status-btn" 
+                [class.active]="selectedStatus === 'incomplete'"
+                (click)="setStatusFilter('incomplete')">
+                Incomplete ({{ getProjectCounts().incomplete }})
+              </button>
+              <button 
+                type="button"
+                class="mobile-status-btn" 
+                [class.active]="selectedStatus === 'completed'"
+                (click)="setStatusFilter('completed')">
+                Completed ({{ getProjectCounts().completed }})
+              </button>
+            </div>
+
+            <!-- Date Filter Row -->
+            <div class="filter-control-row">
+              <div class="date-input-wrapper">
+                <label class="date-label">From:</label>
+                <input 
+                  type="date" 
+                  class="mobile-date-input" 
+                  [(ngModel)]="startDateString" 
+                  name="startDate"
+                  (ngModelChange)="onStartDateChange($event)"
+                  [max]="endDateString || null">
+              </div>
+              <div class="date-input-wrapper">
+                <label class="date-label">To:</label>
+                <input 
+                  type="date" 
+                  class="mobile-date-input" 
+                  [(ngModel)]="endDateString" 
+                  name="endDate"
+                  (ngModelChange)="onEndDateChange($event)"
+                  [min]="startDateString || null">
+              </div>
+            </div>
+
+            <!-- Date Error Row -->
+            <div class="filter-control-row" *ngIf="dateValidationError">
+              <div class="mobile-date-error">
+                <mat-icon class="error-icon">error</mat-icon>
+                <span>End date must be greater than or equal to start date</span>
+              </div>
+            </div>
+
+            <!-- Clear Filters Row -->
+            <div class="filter-control-row">
+              <button type="button" class="mobile-clear-btn" (click)="clearFilters()">
+                <mat-icon>clear</mat-icon>
+                Clear All Filters
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
       <!-- Scrollable Projects Area -->
       <div class="projects-scroll-area">
@@ -191,8 +187,8 @@
 
         <!-- Project Cards Grid -->
         <div class="project-container" *ngIf="FilteredProjects().length > 0">
-          <div class="project-card" *ngFor="let project of paginatedProjects" (click)="onView(project._id)">
-            <div class="card-header">
+            <div class="project-card" *ngFor="let project of paginatedProjects" (click)="onView(project._id, project.projectName, project.dueDate)">            
+              <div class="card-header">
               <h3 class="project-name">{{ project.projectName }}</h3>
               <div [ngClass]="getDueDateClass(project.dueDate)" class="due-date">
                 <mat-icon class="date-icon">event</mat-icon>
@@ -243,7 +239,7 @@
           </button>
           
           <div class="page-numbers">
-            <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+           
             <div class="page-indicator">
               <span class="current-page">{{ currentPage }}</span>
               <span class="total-pages">/ {{ totalPages }}</span>

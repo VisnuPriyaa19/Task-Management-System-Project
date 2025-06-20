@@ -19,7 +19,9 @@ exports.createProject = async (req, res) => {
       msg: 'Project created successfully',
       project: newProject
     });
-  } catch (err) {
+  } 
+  catch (err) 
+  {
     console.error('Create Project Error:', err.message);
     res.status(500).json({ msg: 'Server error while creating project' });
   }
@@ -32,7 +34,8 @@ exports.getProjectsByUser = async (req, res) => {
   try {
     const projects = await Project.find({ user: userId }).sort({ dueDate: 1 });
     res.json(projects);
-  } catch (err) {
+  } 
+  catch (err) {
     console.error('Fetch Projects Error:', err.message);
     res.status(500).json({ msg: 'Server error while fetching projects' });
   }
@@ -49,7 +52,8 @@ exports.getProjectById = async (req, res) => {
       return res.status(404).json({ msg: 'Project not found' });
     }
     res.json(project);
-  } catch (err) {
+  } 
+  catch (err) {
     console.error('Get Project Error:', err.message);
     res.status(500).json({ msg: 'Server error while retrieving project' });
   }

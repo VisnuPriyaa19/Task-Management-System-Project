@@ -1,26 +1,32 @@
 import { Component, HostListener, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
-import { ProjectService } from '../../services/projects/project.service';
-import { TaskService } from '../../services/tasks/task.service';
-import { AuthService } from '../../services/auth/auth.service';
-import { ProjectDialogComponent } from '../project-dialog/project-dialog.component';
-import { forkJoin, tap } from 'rxjs';
-import { ChangeDetectorRef } from '@angular/core';
-import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
-import { DescriptionPopupComponent } from '../description-popup/description-popup.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+
+import { forkJoin, tap } from 'rxjs';
+import { ChangeDetectorRef } from '@angular/core';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+
+import { ProjectDialogComponent } from '../project-dialog/project-dialog.component';
+import { DescriptionPopupComponent } from '../description-popup/description-popup.component';
+
+import { ProjectService } from '../../services/projects/project.service';
+import { TaskService } from '../../services/tasks/task.service';
+import { AuthService } from '../../services/auth/auth.service';
+import { HttpErrorResponse } from '@angular/common/http';
+
+import { HeaderComponent } from '../header/header.component';
 
 interface Task {
   _id: string;
@@ -28,10 +34,21 @@ interface Task {
   name?: string; 
 }
 
+interface Project {
+  _id: string;
+  projectName: string;
+  projectDesc: string;
+  dueDate: string;
+  userId?: string;
+  progress?: number;
+  tasks: Task[];
+}
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
   imports: [
+    HeaderComponent,
     CommonModule,
     FormsModule,
     RouterModule,
@@ -49,7 +66,7 @@ interface Task {
 })
 
 export class DashboardComponent implements OnInit {
-  projects: any[] = [];
+  projects: Project[] = [];
 
   searchTerm: string = '';
 
@@ -62,7 +79,7 @@ export class DashboardComponent implements OnInit {
   isExpanded: { [key: string]: boolean } = {};
 
   currentPage: number = 1;
-  projectsPerPage: number = 6; 
+  projectsPerPage: number = 3; 
   
   selectedStatus: 'all' | 'completed' | 'incomplete' = 'all';
 
@@ -77,6 +94,7 @@ export class DashboardComponent implements OnInit {
   dateValidationError: boolean = false;
 
   isMobileMenuOpen = false;
+  mobileFiltersExpanded = false;
 
   constructor(
     private projectService: ProjectService,
@@ -92,14 +110,18 @@ export class DashboardComponent implements OnInit {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
 
-  get paginatedProjects(): any[] {
+  toggleMobileFilters() {
+    this.mobileFiltersExpanded = !this.mobileFiltersExpanded;
+  }
+
+  get paginatedProjects(): Project[] {
     const filtered = this.getFilteredProjects();
     const start = (this.currentPage - 1) * this.projectsPerPage;
     return filtered.slice(start, start + this.projectsPerPage);
   }
 
   // Helper getter for filtered projects in template
-  get FilteredProjects(): () => any[] {
+  get FilteredProjects(): () => Project[] {
     return () => this.getFilteredProjects();
   }
 
@@ -164,7 +186,7 @@ export class DashboardComponent implements OnInit {
         // Fetch tasks for each project dynamically
         const taskRequests = this.projects.map(project =>
           this.taskService.getTasksByProject(project._id).pipe(
-            tap((tasks: any[]) => project.tasks = tasks) 
+            tap((tasks: Task[]) => project.tasks = tasks) 
           )
         );
 
@@ -173,14 +195,14 @@ export class DashboardComponent implements OnInit {
           next: () => {
             console.log('All tasks successfully fetched');
           },
-          error: (err: any) => console.error('Error fetching tasks:', err) 
+          error: (err: HttpErrorResponse) => console.error('Error fetching tasks:', err) 
         });
       },
-      error: (err: any) => console.error('Error fetching projects:', err) 
+      error: (err: HttpErrorResponse) => console.error('Error fetching projects:', err) 
     });
   }
 
-  calculateProgress(project: any): number {
+  calculateProgress(project: Project): number {
     if (!project.tasks || project.tasks.length === 0) return 0;
 
     const completedTasks = project.tasks.filter((task: { status: string }) => task.status === 'done').length;
@@ -196,7 +218,7 @@ export class DashboardComponent implements OnInit {
     this.cdRef.detectChanges();
   }
 
-  editProject(project: any): void {
+  editProject(project: Project): void {
   const dialogRef = this.dialog.open(ProjectDialogComponent, {
     width: '400px',
     data: { project: { ...project }, allProjects: this.projects } 
@@ -236,7 +258,7 @@ export class DashboardComponent implements OnInit {
 }
 
 
-  confirmDelete(project: any): void {
+  confirmDelete(project: Project): void {
     const hasInProgressTasks = project.tasks.some((task: Task) => task.status === 'in-progress');
     // Show warning only if there are tasks in progress
     const message = hasInProgressTasks
@@ -273,10 +295,10 @@ export class DashboardComponent implements OnInit {
     else return 'due-later';
   }
 
-  onView(projectId: string): void {
-    console.log("this is view ");
-
-    this.router.navigate(['/projects', projectId]);
+  onView(projectId: string, projectName: string, dueDate: string): void {
+    this.router.navigate(['/projects', projectId], {
+      queryParams: { name: projectName, due: dueDate }
+    });
   }
 
   toggleProfileMenu(event: Event): void {
@@ -288,7 +310,7 @@ export class DashboardComponent implements OnInit {
     this.isExpanded[projectId] = !this.isExpanded[projectId];
   }
 
-  openDescriptionPopup(project: any, event: Event): void {
+  openDescriptionPopup(project: Project, event: Event): void {
     event.stopPropagation(); 
     const dialogRef = this.dialog.open(DescriptionPopupComponent, {
       width: '600px',
@@ -321,7 +343,7 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/profile']);
   }
 
-  getFilteredProjects(): any[] {
+  getFilteredProjects(): Project[] {
     let filtered = this.projects;
 
     // Filter by search term

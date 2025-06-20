@@ -23,7 +23,8 @@ export class AuthService {
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
       return payload.exp;
-    } catch {
+    } 
+    catch {
       return null;
     }
   }
@@ -92,7 +93,7 @@ export class AuthService {
   }
 
   checkUsernameEmail(userData: CheckUnameEmailRequest): Observable<UnameEmailCheckResponse> {
-    return this.http.post<{ msg: string }>(`${this.apiUrl}/check-username-email`, userData);
+    return this.http.post<UnameEmailCheckResponse>(`${this.apiUrl}/check-username-email`, userData);
   }
 
   checkUsername(userData: CheckUnameRequest): Observable<UnameCheckResponse> {

@@ -10,7 +10,7 @@ const TaskSchema = new mongoose.Schema({
   },
   priority: {
     type: String,
-    enum: ['low', 'medium', 'high'],
+    enum: ['low', 'medium', 'high'],      //enum - enumeration(limits the value of a field to a predefined set of values)
     default: 'medium',
   },
   dueDate: {
@@ -27,6 +27,11 @@ const TaskSchema = new mongoose.Schema({
     ref: 'Project',
     required: true,
   },
+  completedAt: {
+  type: Date,
+  default: null
+}
+
   
 },{ timestamps: true } );
 

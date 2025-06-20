@@ -1,8 +1,10 @@
 //--------------------REQUEST--------------------
 export interface RegisterRequest {
+  id?: string;
   uname: string;
   email: string;
   password: string;
+  joinDate?: string;
 }
 
 export interface LoginRequest {
