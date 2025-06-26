@@ -1,17 +1,16 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { BaseChartDirective } from 'ng2-charts';
+
 import { Chart, ChartConfiguration, ChartData, registerables } from 'chart.js';
-import { ActivatedRoute } from '@angular/router';
 import { NgChartsModule } from 'ng2-charts';
 
 import { HeaderComponent } from '../header/header.component';
 import { TaskService } from '../../services/tasks/task.service';
-import { AuthService } from '../../services/auth/auth.service';
 import { TaskSummaryResponse } from '../../models/task.model';
-
 
 // Register Chart.js components
 Chart.register(...registerables);
@@ -31,7 +30,6 @@ Chart.register(...registerables);
 })
 export class ChartjsSummaryComponent implements OnInit {
   private taskService = inject(TaskService);
-  private authService = inject(AuthService);
   private route = inject(ActivatedRoute);
 
   // Dashboard data

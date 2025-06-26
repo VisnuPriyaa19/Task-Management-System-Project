@@ -60,7 +60,7 @@ export interface OTPSendResponse {
 }
 
 export interface OTPVerifyResponse {
-  msg: string;
+  msg?: string;
 }
 
 export interface UnameCheckResponse {
@@ -68,7 +68,7 @@ export interface UnameCheckResponse {
 }
 
 export interface UnameEmailCheckResponse {
-  msg: string;
+  msg?: string;
 }
 
 export interface UpdateUsernameResponse {

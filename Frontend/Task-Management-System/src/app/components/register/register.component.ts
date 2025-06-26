@@ -10,9 +10,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
 import { HeaderComponent } from '../header/header.component';
+import { FooterComponent } from '../footer/footer.component';
 
 import { AuthService } from '../../services/auth/auth.service';
-import { FooterComponent } from '../footer/footer.component';
 
 @Component({
   selector: 'app-register',

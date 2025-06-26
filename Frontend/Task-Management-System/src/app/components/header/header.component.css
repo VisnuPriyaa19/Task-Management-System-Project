@@ -61,18 +61,6 @@
   color: white;
 }
 
-/* .search-container {
-  display: flex;
-  align-items: center;
-} */
-/* 
-.search-field {
-  padding: 0.5rem;
-  margin-left: 0.5rem;
-  border-radius: 5px;
-  border: none;
-} */
-
 .profile-container {
   position: relative;
   cursor: pointer;
@@ -105,11 +93,9 @@
   color: white;
 }
 
-
 .profile-option:hover {
   background-color: #f0f0f0;
 }
-
 
 .logout-btn {
   background-color: #dc3545 !important;
@@ -130,18 +116,14 @@
   box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
 }
 
-
 .mobile-nav {
   display: none;
-  
   flex-direction: column;
-  /* background-color: #0056b3; */
    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 1rem;
 }
 
 .mobile-nav a {
-  
   color: white;
   padding: 0.5rem 0;
   text-decoration: none;
@@ -152,8 +134,6 @@
   display: flex;
 }
 
-
-/* Header Search Styling */
 .header-search {
   display: flex;
   justify-content: flex-end;
@@ -207,42 +187,40 @@
   color: rgba(255, 255, 255, 0.7);
 }
 
-/* Responsive */
+/* Responsive Design*/
 @media (max-width: 768px) {
   .desktop-only {
     display: none;
   }
 
-  
 .mobile-nav {
- 
   margin-top: 8%;
-
-  /* background-color: #0056b3; */
-   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 1rem;
 }
-  .hamburger {
-    display: block;
-  }
+  
+.hamburger {
+  display: block;
+}
 
-  .search-container {
-    display: none;
-  }
-   .header-search .search-field-container {
-    width: 180px;
-    min-width: 150px;
-    padding: 6px 12px;
-  }
+.search-container {
+  display: none;
+}
 
-  .header-search .search-field {
-    font-size: 12px;
-  }
+.header-search .search-field-container {
+  width: 180px;
+  min-width: 150px;
+  padding: 6px 12px;
+}
 
-  .header-search .search-icon {
-    font-size: 16px;
-    width: 16px;
-    height: 16px;
+.header-search .search-field {
+  font-size: 12px;
+}
+
+.header-search .search-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
   }
 }
 
@@ -261,7 +239,7 @@
 .navbar-center {
   flex: 1;
   display: flex;
-  justify-content: flex-end; /* pushes search to the right */
+  justify-content: flex-end;
   margin: 0 1rem;
 }
 

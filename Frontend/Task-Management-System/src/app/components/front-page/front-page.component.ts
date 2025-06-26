@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 
@@ -9,6 +10,7 @@ import { FooterComponent } from '../footer/footer.component';
   templateUrl: './front-page.component.html',
   styleUrl: './front-page.component.css'
 })
+
 export class FrontPageComponent {
   constructor() { }
 

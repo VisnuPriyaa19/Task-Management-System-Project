@@ -1,4 +1,4 @@
-import { TaskStructure, TaskSummaryResponse } from "./task.model";
+import {TaskSummaryResponse } from "./task.model";
 
 
 //--------------------REQUEST--------------------
