@@ -126,10 +126,6 @@ export class DashboardComponent implements OnInit {
   }
 
   get totalPages(): number {
-    console.log("tot",Math.ceil(this.getFilteredProjects().length / this.projectsPerPage));
-    console.log(this.getFilteredProjects().length )
-    console.log(this.projectsPerPage)
-
     return Math.ceil(this.getFilteredProjects().length / this.projectsPerPage);
   }
 
@@ -400,7 +396,6 @@ export class DashboardComponent implements OnInit {
       });
     }
 
-    console.log("ff",filtered);
     return filtered;
   }
 
