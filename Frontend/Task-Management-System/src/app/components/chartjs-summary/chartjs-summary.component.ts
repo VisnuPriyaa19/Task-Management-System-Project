@@ -540,7 +540,7 @@ export class ChartjsSummaryComponent implements OnInit {
     });
 
     // Sort by completion time for better visualization
-    completionData.sort((a, b) => a.completionTime - b.completionTime);
+    //completionData.sort((a, b) => a.completionTime - b.completionTime);
 
     // Limit to top 10 tasks for better readability
     const displayData = completionData.slice(0, 10);
