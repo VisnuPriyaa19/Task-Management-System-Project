@@ -1,13 +1,9 @@
 <!-- Header -->
 <div class="main">
 
-  
 
-    <app-header
-    
-    [showProfile]="true"
-    [showhamburger]="true"
-    >
+
+  <app-header [showProfile]="true" [showhamburger]="true">
   </app-header>
 
   <div class="container">
@@ -51,8 +47,7 @@
             <mat-form-field appearance="outline">
               <mat-label>Start Date</mat-label>
               <input matInput name="startDate" [(ngModel)]="startDate" [matDatepicker]="startPicker"
-                #startDateCtrl="ngModel" (ngModelChange)="onStartDateChange($event)"
-                [max]="endDate">
+                #startDateCtrl="ngModel" (ngModelChange)="onStartDateChange($event)" [max]="endDate">
               <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
               <mat-datepicker #startPicker></mat-datepicker>
               <mat-icon matPrefix>event</mat-icon>
@@ -61,8 +56,7 @@
             <mat-form-field appearance="outline">
               <mat-label>End Date</mat-label>
               <input matInput name="endDate" [(ngModel)]="endDate" [matDatepicker]="endPicker" #endDateCtrl="ngModel"
-                (ngModelChange)="onEndDateChange($event)"
-                [min]="startDate">
+                (ngModelChange)="onEndDateChange($event)" [min]="startDate">
               <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
               <mat-datepicker #endPicker></mat-datepicker>
               <mat-icon matPrefix>event</mat-icon>
@@ -73,15 +67,15 @@
             </mat-form-field>
 
             <!-- Chart Library Dropdown -->
-<mat-form-field appearance="outline">
-  <mat-label>Summary Charts</mat-label>
-  <mat-select (selectionChange)="goToChartSummary($event.value)">
-    <mat-option value="echarts">ECharts</mat-option>
-    <mat-option value="chartjs">Chart.js</mat-option>
-    <mat-option value="highcharts">Highcharts</mat-option>
-  </mat-select>
-  <mat-icon matPrefix>bar_chart</mat-icon>
-</mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Summary Charts</mat-label>
+              <mat-select (selectionChange)="goToChartSummary($event.value)">
+                <mat-option value="echarts">ECharts</mat-option>
+                <mat-option value="chartjs">Chart.js</mat-option>
+                <mat-option value="highcharts">Highcharts</mat-option>
+              </mat-select>
+              <mat-icon matPrefix>bar_chart</mat-icon>
+            </mat-form-field>
 
 
             <!-- Action Buttons -->
